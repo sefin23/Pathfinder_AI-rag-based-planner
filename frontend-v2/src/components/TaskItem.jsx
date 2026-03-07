@@ -4,11 +4,11 @@
  */
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, ChevronDown, Star, Trash2 } from 'lucide-react'
+import { ChevronRight, ChevronDown, Sparkles, Trash2 } from 'lucide-react'
 import SubtaskList from './SubtaskList'
 import TaskProgressBar from './TaskProgressBar'
 
-const PRIORITY_COLORS = { 1: '#C65D4A', 2: '#D47C3F', 3: '#5C8C75', 4: '#7B6FA0', 5: '#B8CFC7' }
+const PRIORITY_COLORS = { 1: 'var(--coral)', 2: 'var(--amber)', 3: 'var(--sage)', 4: 'var(--lavender)', 5: 'var(--muted)' }
 const PRIORITY_LABELS = { 1: 'HIGH', 2: 'MED', 3: 'LOW', 4: 'AI', 5: 'OPT' }
 
 export default function TaskItem({
@@ -39,7 +39,6 @@ export default function TaskItem({
   const subtasks = task.subtasks ?? []
   const completedSubs = subtasks.filter((s) => s.done).length
   const priorityColor = PRIORITY_COLORS[task.priority] ?? 'var(--fog)'
-  const priorityBg = `${priorityColor}33` // 20% opacity using hex rough approx
 
   const commitEdit = () => {
     const t = draft.trim()
@@ -57,19 +56,19 @@ export default function TaskItem({
     <motion.div
       layout
       className={task.done ? "task-row done" : "task-row"}
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: index * 0.05 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
         gap: 0,
         padding: 0,
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        background: 'rgba(255,255,255,0.02)',
+        border: '1px solid rgba(255,255,255,0.05)',
         borderRadius: 'var(--r-md)',
-        marginBottom: 8,
+        marginBottom: 10,
         transition: 'all 0.3s',
       }}
     >
@@ -79,8 +78,8 @@ export default function TaskItem({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
-          padding: '10px 14px',
+          gap: 14,
+          padding: '14px 18px',
           cursor: subtasks.length > 0 ? 'pointer' : 'default',
         }}
         className="group"
@@ -97,9 +96,12 @@ export default function TaskItem({
             display: 'flex',
             padding: 2,
             flexShrink: 0,
+            transition: 'color 0.2s',
           }}
+          onMouseEnter={e => { if(subtasks.length > 0) e.currentTarget.style.color = 'white'}}
+          onMouseLeave={e => { if(subtasks.length > 0) e.currentTarget.style.color = 'var(--fog)'}}
         >
-          {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
         </button>
 
         {/* Priority badge */}
@@ -110,19 +112,30 @@ export default function TaskItem({
             const nextP = task.priority >= 5 ? 1 : task.priority + 1
             onEditPriority?.(task.id, nextP)
           }}
+          className="font-mono"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '2px 7px',
-            borderRadius: 20,
-            background: priorityBg,
+            padding: '4px 8px',
+            borderRadius: 'var(--r-sm)',
+            background: `rgba(${
+              task.priority === 1 ? '216,110,110' :
+              task.priority === 2 ? '212,124,63' :
+              task.priority === 3 ? '146,171,155' :
+              task.priority === 4 ? '123,111,160' :
+              '148,163,184'
+            }, 0.1)`,
             color: priorityColor,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 8,
+            fontSize: 9,
+            fontWeight: 700,
+            letterSpacing: '0.05em',
             flexShrink: 0,
             cursor: 'pointer',
             borderLeft: `3px solid ${priorityColor}`,
+            minWidth: 40,
+            textAlign: 'center',
+            transition: 'all 0.2s'
           }}
         >
           {PRIORITY_LABELS[task.priority] || `P${task.priority}`}
@@ -134,10 +147,10 @@ export default function TaskItem({
           onClick={() => onToggleDone?.(task.id)}
           className="cb"
           style={{
-            width: 22,
-            height: 22,
+            width: 24,
+            height: 24,
             border: `2px solid var(--sage)`,
-            borderRadius: 6,
+            borderRadius: 'var(--r-sm)',
             background: task.done ? 'var(--sage)' : 'transparent',
             flexShrink: 0,
             cursor: 'pointer',
@@ -148,7 +161,7 @@ export default function TaskItem({
             transform: task.done ? 'scale(1.15)' : 'scale(1)',
           }}
         >
-          {task.done && <span style={{ color: 'white', fontSize: 13, fontWeight: 700 }}>✓</span>}
+          {task.done && <span style={{ color: 'var(--forest-deep)', fontSize: 14, fontWeight: 700 }}>✓</span>}
         </button>
 
         {/* Task title */}
@@ -163,13 +176,13 @@ export default function TaskItem({
               onKeyDown={(e) => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditing(false) }}
               style={{
                 width: '100%',
-                background: 'var(--forest-card)',
+                background: 'var(--forest-card2)',
                 border: '1px solid var(--sage)',
-                borderRadius: 6,
-                padding: '3px 8px',
+                borderRadius: 'var(--r-sm)',
+                padding: '4px 10px',
                 color: 'white',
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: 14,
+                fontSize: 15,
                 outline: 'none',
               }}
             />
@@ -179,9 +192,9 @@ export default function TaskItem({
               className="cbl"
               title="Click to edit"
               style={{
-                fontSize: 14,
-                fontWeight: 400,
-                color: task.done ? 'var(--muted)' : 'var(--on-dark)',
+                fontSize: 15,
+                fontWeight: task.done ? 400 : 500,
+                color: task.done ? 'var(--muted)' : 'white',
                 textDecoration: task.done ? 'line-through' : 'none',
                 cursor: 'text',
                 display: 'block',
@@ -196,7 +209,7 @@ export default function TaskItem({
           )}
           {/* Subtitle: description */}
           {task.description && !editing && (
-            <span style={{ fontSize: 11, color: 'var(--muted)', display: 'block', marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: 12, color: 'var(--fog)', display: 'block', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: task.done ? 0.5 : 1 }}>
               {task.description}
             </span>
           )}
@@ -204,8 +217,8 @@ export default function TaskItem({
 
         {/* AI Tag */}
         {!task.done && task.id && (
-           <span className="cai" style={{ fontSize: 11, color: 'var(--lavender)', opacity: 0.7, marginLeft: 'auto' }}>
-             ✨ AI
+           <span className="cai font-mono" style={{ fontSize: 10, fontWeight: 700, color: 'var(--lavender)', opacity: 0.8, marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(123,111,160,0.1)', padding: '2px 8px', borderRadius: 'var(--r-pill)' }}>
+             <Sparkles size={10} /> AI
            </span>
         )}
 
@@ -214,26 +227,29 @@ export default function TaskItem({
           <div
             data-no-expand
             style={{ 
-            display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0,
-            background: 'rgba(255,255,255,0.06)', borderRadius: 6,
-            padding: '2px 6px'
+            display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
+            background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--r-sm)',
+            padding: '4px 8px', border: '1px solid rgba(255,255,255,0.08)'
           }}>
-            <span style={{ fontSize: 11, color: 'var(--fog)' }}>Day</span>
+            <span className="font-mono" style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase' }}>Day</span>
             <input 
               aria-label="Task due offset days"
               type="number" min="0"
               value={task.suggested_due_offset_days}
               onChange={e => onEditDays?.(task.id, parseInt(e.target.value) || 0)}
+              className="font-mono"
               style={{
-                width: 38,
+                width: 40,
                 background: 'transparent',
                 border: 'none',
                 borderBottom: '1px solid rgba(255,255,255,0.2)',
                 color: 'white',
                 fontSize: 12,
+                fontWeight: 700,
                 textAlign: 'center',
                 outline: 'none',
-                padding: '0 2px'
+                padding: '0 2px',
+                transition: 'border-color 0.2s'
               }}
               onFocus={e => e.target.style.borderBottomColor = 'var(--sage)'}
               onBlur={e => e.target.style.borderBottomColor = 'rgba(255,255,255,0.2)'}
@@ -246,15 +262,17 @@ export default function TaskItem({
             data-no-expand
             className="opacity-0 group-hover:opacity-100 transition-opacity"
             onClick={() => onDeleteTask?.(task.id)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--coral)', display: 'flex', padding: 4 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--coral)', display: 'flex', padding: 6, opacity: 0.7 }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = 1 }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = 0.7 }}
         >
-            <Trash2 size={13} />
+            <Trash2 size={16} />
         </button>
       </div>
 
       {/* Progress bar (only when subtasks exist) */}
       {subtasks.length > 0 && (
-        <div style={{ padding: '0 14px 8px 14px' }}>
+        <div style={{ padding: '0 18px 12px 18px' }}>
           <TaskProgressBar completed={completedSubs} total={subtasks.length} />
         </div>
       )}
@@ -266,8 +284,8 @@ export default function TaskItem({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.22 }}
-            style={{ padding: '0 14px 10px', overflow: 'hidden' }}
+            transition={{ duration: 0.3 }}
+            style={{ padding: '0 18px 14px', overflow: 'hidden' }}
           >
             <SubtaskList
               subtasks={subtasks}
