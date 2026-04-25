@@ -12,7 +12,7 @@ Most life situations don't come with instructions. You type _"I'm finishing coll
 ## Key Features
 
 - 🧠 **Context-Aware Planning** — understands vague natural language input, not rigid forms. Covers 10 life domains: Housing, Work, Education, Health, Family, Finance, Legal, Parenting, Loss, and Personal Growth.
-- ❓ **Smart Clarification** — asks follow-up questions only when the system's confidence in understanding the user's intent falls below a threshold, reducing cognitive load.
+- ❓ **Smart Clarification** — asks follow-up questions so that it makes sure the system has the required information and it does not hallucinate while giving the answer.
 - ✅ **User-Controlled Approval** — AI proposes a full workflow before anything is saved. The user reviews, modifies, or rejects it. No irreversible actions without explicit approval.
 - 🗺️ **Guide Me** — walks the user through any task step-by-step, automatically finding the right official links, checking their uploaded documents, and pre-filling personal details.
 - 💬 **Ask Your Plan** — a context-aware floating chatbot that understands the user's specific tasks, uploaded documents, and local city/state rules.
