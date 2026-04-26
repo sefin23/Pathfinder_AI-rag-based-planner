@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="pathfinder_logo.svg" alt="PathFinder AI Logo" width="90" />
+  <img src="docs/branding/pathfinder_logo.svg" alt="PathFinder AI Logo" width="90" />
 </p>
 
 <h1 align="center">PathFinder AI</h1>
