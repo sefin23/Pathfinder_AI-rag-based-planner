@@ -24,21 +24,19 @@ Most life situations don't come with instructions. You type _"I'm finishing coll
 
 **Life-Event First, Not Task First** — tasks only make sense in context. A "Prepare documents" task is meaningless unless the system understands the underlying event. All workflows, deadlines, and reminders are scoped under a life event that can span days, months, or years.
 
-**Zero-Context-Switching Execution** — Most planning systems fail because they only tell you *what* to do, but not *how*. PathFinder AI brings the execution to the user. By pre-filling personal details from the Vault and embedding official links directly into the guided walkthroughs, the user never has to leave the interface to find the right form or verify their own details. It reduces the "cognitive load" and "tab-hunting" that makes life transitions stressful.
+**Zero-Context-Switching Execution** — Most planning systems fail because they only tell you _what_ to do, but not _how_. PathFinder AI brings the execution to the user. By pre-filling personal details from the Vault and embedding official links directly into the guided walkthroughs, the user never has to leave the interface to find the right form or verify their own details. It reduces the "cognitive load" and "tab-hunting" that makes life transitions stressful.
 
 **Progressive Clarification over Perfect Input** — users often cannot articulate all details at once, especially during stressful situations. The system accepts vague input and clarifies gradually instead of forcing structured forms upfront.
 
 **AI Assists, Never Decides** — AI suggestions are always editable, optional, and labeled as recommendations. The user remains fully in control.
 
-## 🛡️ Why RAG over Web Scraping?
+## 🛡️ Why RAG and not web scraping?
 
-A common question for a project like this is: *"Why not just scrape government portals in real-time?"* 
+**Scrapers break constantly.** Government portals change their HTML structure without warning, vary across cities and states, and actively block bots. A scraper giving someone wrong instructions about a visa filing or a legal document is worse than no instructions at all. Building and maintaining scrapers for dozens of portals would be a full-time job — and still unreliable.
 
-PathFinder AI intentionally uses **Retrieval-Augmented Generation (RAG)** with a curated knowledge base instead of web scraping for four critical reasons:
-1.  **Reliability**: Government portals change their HTML structure frequently. Real-time scrapers are fragile and break often, whereas a curated RAG system provides stable, verified guidance.
-2.  **Maintenance**: Managing scrapers for dozens of different city, state, and national portals is a massive technical overhead.
-3.  **Legal & Ethical Safety**: Scraping government infrastructure can be legally complex and is often blocked by security systems. RAG allows us to provide the same value using "Source of Truth" data without intrusive bot behavior.
-4.  **Anti-Hallucination**: By grounding the AI in a specific, hand-curated knowledge base, we prevent the model from "making up" outdated or incorrect procedural steps found on random internet forums.
+**Hallucination risk is higher without grounding.** Without a verified knowledge base, the model fills gaps with whatever it finds — outdated forum posts, incorrect procedures, stale links. RAG anchors every response to hand-curated, verified information.
+
+**Legal clarity.** Scraping government infrastructure sits in a legal grey area in many jurisdictions. RAG gives us the same informational value without bot behaviour on public infrastructure.
 
 ## Documentation
 
